@@ -1,4 +1,5 @@
 import { capitalizeFirstLetter } from '../../utils/stringUtils';
+import cyp from '../../utils/cypressManager';
 
 class LeftContainer {
     private selectedTheme: string = "Light";
@@ -19,11 +20,15 @@ class LeftContainer {
         `nb-option.ng-star-inserted[ng-reflect-value='${this.themeOptions[option.toLowerCase()]}']`;
 
     public selectTheme(option: string) {
-        cy.get(this.theme_sel).should("contain.text", this.selectedTheme).click();
-        cy.get(this.themeOptions_ctr).find(this.theme_opt(option)).click();
-        cy.get(this.theme_sel).should("contain.text", capitalizeFirstLetter(option));
-        cy.get('body').should("have.class", `nb-theme-${this.themeOptions[option.toLowerCase()]}`);
+        cyp.validateContainText(this.theme_sel, this.selectedTheme).click();
+        cyp.findChildElement(this.themeOptions_ctr, this.theme_opt(option)).click();
+        cyp.validateContainText(this.theme_sel, capitalizeFirstLetter(option));
+        cyp.validateHaveClass('body', `nb-theme-${this.themeOptions[option.toLowerCase()]}`);
         this.selectedTheme = capitalizeFirstLetter(option);
+    }
+
+    public clickSideBarToggle() {
+        cyp.findElement(this.accordion_btn).click();
     }
 }
 

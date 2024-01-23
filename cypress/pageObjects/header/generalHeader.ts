@@ -1,15 +1,14 @@
 import leftMenu from './leftContainer';
 import rightMenu from './rightContainer';
+import cyp from '../../utils/cypressManager';
 
 class GeneralHeader {
     private leftMenu = leftMenu;
     private rightMenu = rightMenu;
 
     validateLeftMenu() {
-        cy.contains('ngx-admin')
-        cy.get(this.leftMenu.accordion_btn);
-        cy.get(this.leftMenu.logo);
-        cy.get(this.leftMenu.theme_sel);
+        cyp.findElementByText('ngx-admin');
+        cyp.findElements(this.leftMenu.accordion_btn, this.leftMenu.logo, this.leftMenu.theme_sel);
     }
 
     validateThemeSelection(option: string) {
@@ -17,11 +16,14 @@ class GeneralHeader {
     }
 
     validateRightMenu() {
-        cy.get(this.rightMenu.menu_opt('search'));
-        cy.get(this.rightMenu.menu_opt('email'));
-        cy.get(this.rightMenu.menu_opt('bell'));
-        cy.get(this.rightMenu.menu_user('pic'));
-        cy.get(this.rightMenu.menu_user('name')).should("contain.text", "Nick Jones");
+        const options = this.rightMenu.menu_opt;
+        const user = this.rightMenu.menu_user;
+        cyp.findElements(options('search'), options('email'), options('bell'), user('pic'));
+        cyp.validateContainText(user('name'), "Nick Jones");
+    }
+
+    toggleSideBar() {
+        leftMenu.clickSideBarToggle();
     }
 }
 
