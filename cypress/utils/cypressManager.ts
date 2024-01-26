@@ -2,7 +2,7 @@ class CypressManager {
 
     // Browser Actions
 
-    navigateTo(url: string = '') {
+    navigateTo(url: string = "") {
         cy.visit(url);
     }
 
@@ -26,7 +26,7 @@ class CypressManager {
 
     // Validation
 
-    private validateElement(locator: string, chainer: string, text: string, options: object = {}) {
+    private validateElement(locator: string, chainer: string, text: string = "", options: object = {}) {
         return this.findElement(locator, options).should(chainer, text);
     }
 
@@ -40,6 +40,10 @@ class CypressManager {
 
     validateDoesNotHaveClass(locator: string, text: string, options: object = {}) {
         return this.validateElement(locator, "not.have.class", text, options);
+    }
+
+    validateDoesNotExist(locator: string) {
+        return this.validateElement(locator, "not.exist");
     }
     
     validateTextFromOptions(locator: string, expected: string[]) {

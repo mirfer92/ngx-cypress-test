@@ -18,8 +18,15 @@ class GeneralHeader {
     validateRightMenu() {
         const options = this.rightMenu.menu_opt;
         const user = this.rightMenu.menu_user;
+        const profile = this.rightMenu.profile_menu_opt;
         cyp.findElements(options('search'), options('email'), options('bell'), user('pic'));
         cyp.validateContainText(user('name'), "Nick Jones");
+        cyp.validateDoesNotExist(profile('Profile'));
+        cyp.validateDoesNotExist(profile('Log Out'));
+        rightMenu.openProfileMenu();
+        cyp.findElement(profile('Profile'));
+        cyp.findElement(profile('Log Out'));
+        rightMenu.closeProfileMenu();
     }
 
     toggleSideBar() {
